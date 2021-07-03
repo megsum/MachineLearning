@@ -17,11 +17,11 @@ for iter = 1:num_iters
     %       of the cost function (computeCost) and gradient here.
     %
 
-
-
-
-
-
+	h = (X * theta);
+	sum_value = (alpha * (1 / m)) *  sum((h-y).*X);
+	
+	% Sum is giving me back a 1 by 2 vector when it should be giving me a 2 by 1, so I am inverting it here. Will need to ask why
+	theta = theta - sum_value';
 
     % ============================================================
 
