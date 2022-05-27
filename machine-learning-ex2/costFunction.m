@@ -20,12 +20,21 @@ grad = zeros(size(theta));
 % Note: grad should have the same dimensions as theta
 %
 
+% Use the sigmoid function we created earlier to compute the hypothesis
+% From what I know the formula is theta' * X, but it kept return things
+% in a matrix which is not what we want
+h = sigmoid(X * theta);
 
+% Not too sure when to use element multiplication (.*) vs matrix multiplication (*) still. 
+% Need to do some more reading on this.
+y_zero = (-y .* log(h));
+y_one = ((1 - y) .* log(1 - h));
 
+% Calculate cost
+J = (1 / m) * sum(y_zero - y_one);
 
-
-
-
+% Calculate gradient
+grad = ((1 / m)) *  sum((h - y) .* X);
 
 % =============================================================
 

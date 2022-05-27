@@ -15,13 +15,16 @@ p = zeros(m, 1);
 %               You should set p to a vector of 0's and 1's
 %
 
-
-
-
-
-
+% There is probably a better way to do this that doesn't use a for loop
+% Iterate through every X row and determine if that row should be 0 or 1
+% using the sigmoid function and a threshold of 0.5
+sig = sigmoid(X * theta);
+for i = 1:m
+    if sig(i) >= 0.5
+        p(i) = 1;
+    else
+        p(i) = 0;
+    end
 
 % =========================================================================
-
-
 end
