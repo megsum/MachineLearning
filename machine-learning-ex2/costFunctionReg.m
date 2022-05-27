@@ -18,9 +18,26 @@ grad = zeros(size(theta));
 %               derivatives of the cost w.r.t. each parameter in theta
 
 
+h = sigmoid(X * theta);
 
+y_zero = (-y .* log(h));
+y_one = ((1 - y) .* log(1 - h));
 
+% Calculate regularized cost
+J = (1 / m) * sum(y_zero - y_one) + (lambda / (2 * m)) * sum(theta(2:end).^2);
 
+for j = 1:length(theta)
+    % Should not regularize when theta = 0
+    if j == 1
+        % Calculate cost for theta = 0
+        %J = (1 / m) * sum(y_zero - y_one);
+        % Calculate gradient for theta = 0
+        grad(1) = (1 / m) *  sum((h - y) .* X(:,1));
+
+    else
+        % Calculate regularized gradient
+        grad(j) = (1 / m) *  sum((h - y) .* X(:,j)) + (lambda / m) * theta(j);
+end
 
 % =============================================================
 
