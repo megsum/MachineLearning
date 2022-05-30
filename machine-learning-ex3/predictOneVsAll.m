@@ -28,15 +28,17 @@ X = [ones(m, 1) X];
 %       max element, for more information see 'help max'. If your examples 
 %       are in rows, then, you can use max(A, [], 2) to obtain the max 
 %       for each row.
-%       
+%
 
+% Get the cummulative hypothesis using the sigmoid function
+h = sigmoid(X * all_theta');
 
+% Get the number that is most likely based off the hypothesis
+[max_num, index] = max(h, [], 2);
 
-
-
-
+% Index can be used to determine which number is likely (from 1 to 10 with 0 being equal to 10)
+p = index;
 
 % =========================================================================
-
-
 end
+
