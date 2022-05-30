@@ -127,4 +127,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-/machine-learning-ex2/token.mat
+token.mat
