@@ -21,13 +21,30 @@ p = zeros(size(X, 1), 1);
 %       can use max(A, [], 2) to obtain the max for each row.
 %
 
+% Input layer is a1 (X)
+a1 = X;
 
+% Add ones to signify the bias unit 
+a1 = [ones(m, 1) a1];
 
+% z2 is the first hidden layer. We can use our initial theta for it
+z2 = a1 * Theta1';
+a2 = sigmoid(z2);
+% Add ones to signify the bias unit
+a2 = [ones(m, 1) a2];
 
+% z3 is the second hidden layer. We use the thetas computed by the project
+z3 = a2 * Theta2';
+a3 = sigmoid(z3);
 
+% Our hypothesis is equal to layer 3 (output layer)
+h = a3;
 
+% Get the number that is most likely based off the hypothesis
+[max_num, index] = max(h, [], 2);
 
-
+% Index can be used to determine which number is likely (from 1 to 10 with 0 being equal to 10)
+p = index;
 
 % =========================================================================
 
