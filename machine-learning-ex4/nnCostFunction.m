@@ -94,6 +94,7 @@ J = (1/m) * sum(sum(y_one - y_two));
 %               over the training examples if you are implementing it for the 
 %               first time.
 %
+
 % Part 3: Implement regularization with the cost function and gradients.
 %
 %         Hint: You can implement this around the code for
@@ -101,6 +102,14 @@ J = (1/m) * sum(sum(y_one - y_two));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
+
+% Calculate the regularization cost. Don't do regularization on the bias layer
+theta1_reg = sum(sum(Theta1(1:end,2:input_layer_size+1).^2));
+theta2_reg = sum(sum(Theta2(1:end,2:hidden_layer_size+1).^2));
+J_reg = lambda / (2 * m) *  (theta1_reg + theta2_reg);
+
+% Add the regularization cost to our calculated cost
+J = J + J_reg;
 
 % -------------------------------------------------------------
 
