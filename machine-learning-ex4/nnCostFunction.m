@@ -39,6 +39,46 @@ Theta2_grad = zeros(size(Theta2));
 %         cost function computation is correct by verifying the cost
 %         computed in ex4.m
 %
+
+% Input layer is a1 (X)
+a1 = X;
+
+% Add ones to signify the bias unit 
+a1 = [ones(m, 1) a1];
+
+% z2 is the first hidden layer. We can use our initial theta for it
+z2 = a1 * Theta1';
+
+a2 = sigmoid(z2);
+% Add ones to signify the bias unit
+a2 = [ones(m, 1) a2];
+
+% z3 is the second hidden layer. We use the thetas computed by the project
+z3 = a2 * Theta2';
+a3 = sigmoid(z3);
+
+% Our hypothesis is equal to layer 3 (output layer)
+h = a3;
+
+% Need to make y into a matrix of 0s and 1s depending on the value of the sample
+% For example, if x(i) is 5, then the corresponding y(i) should be a 10-dimensional
+% vector with y5 = 1, and the other elements equal to 0
+ynew = zeros(m, num_labels);
+for i = 1:m
+    % y(0) doesn't exist, so we move 0 to the 10th index
+    if y(i) == 0
+        ynew(i, 10) = 1;
+    else
+        ynew(i, y(i)) = 1;
+end
+
+% Compute the cost with the new y matrix
+y_one = -ynew .* log(h);
+y_two = (1-ynew) .* log(1-h);
+
+% Must sum for each sample and each label
+J = (1/m) * sum(sum(y_one - y_two));
+
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
 %         the cost function with respect to Theta1 and Theta2 in Theta1_grad and
@@ -61,24 +101,6 @@ Theta2_grad = zeros(size(Theta2));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 % -------------------------------------------------------------
 
