@@ -95,6 +95,39 @@ J = (1/m) * sum(sum(y_one - y_two));
 %               first time.
 %
 
+% Set initial values for Deltas so they can be accumulated
+Delta1 = zeros(size(Theta1));;
+Delta2 = zeros(size(Theta2));;
+
+% You should implement steps 1 to 4 in a loop that processes one example at a time. Concretely, you should implement a for-loop for t = 1:m and
+% place steps 1-4 below inside the for-loop, with the tth iteration performing the calculation on the tth training example (x(t), y(t)). Step 5 will divide the
+% accumulated gradients by m to obtain the gradients for the neural network cost function.
+for i = 1:m
+
+% STEP 1. Perform a feedforward pass
+% Already computed the values for step 1. Reusing them here
+
+% STEP 2. For each output unit k in layer 3 (the output layer), set d_3 
+% where yk ∈ {0, 1} indicates whether the current training example belongs to class k (yk = 1), or if it belongs to a different class (yk = 0).
+% You may find logical arrays helpful for this task (explained in the previous programming exercise).
+    d3 = a3(i,:) - ynew(i,:);
+
+% STEP 3. For the hidden layer l = 2, set d_2
+    d2 = d3 * Theta2;
+    d2 = d2(2:end);
+    d2 = d2 .* sigmoidGradient(z2(i,:));
+
+% STEP 4. Accumulate the gradient from this example using the following formula. Note that you should skip or remove δ(2)0
+% In Octave/MATLAB,removing δ(2)0 corresponds to d2 = d2(2:end)
+% Not too sure why the d variables need to be transposed. BUT IT WORKED :D
+    Delta1  = Delta1  + d2' * a1(i,:);
+    Delta2 = Delta2 + d3' * a2(i,:);
+end
+
+% STEP 5. Obtain the (unregularized) gradient for the neural network cost function by dividing the accumulated gradients by 1 / m
+Theta1_grad = (1/m) * Delta1;
+Theta2_grad = (1/m) * Delta2;
+
 % Part 3: Implement regularization with the cost function and gradients.
 %
 %         Hint: You can implement this around the code for
@@ -104,12 +137,16 @@ J = (1/m) * sum(sum(y_one - y_two));
 %
 
 % Calculate the regularization cost. Don't do regularization on the bias layer
-theta1_reg = sum(sum(Theta1(1:end,2:input_layer_size+1).^2));
-theta2_reg = sum(sum(Theta2(1:end,2:hidden_layer_size+1).^2));
-J_reg = lambda / (2 * m) *  (theta1_reg + theta2_reg);
+Theta1_reg = sum(sum(Theta1(1:end,2:input_layer_size+1).^2));
+Theta2_reg = sum(sum(Theta2(1:end,2:hidden_layer_size+1).^2));
+J_reg = lambda / (2 * m) *  (Theta1_reg + Theta2_reg);
 
 % Add the regularization cost to our calculated cost
 J = J + J_reg;
+
+% Add the regularization gradient to our calculated gradient
+Theta1_grad(:,2:end) = Theta1_grad + Theta1_reg + (lambda/m) * Theta1;
+Theta2_grad(:,2:end) = Theta2_grad + Theta2_reg + (lambda/m) * Theta2;;
 
 % -------------------------------------------------------------
 
@@ -117,6 +154,5 @@ J = J + J_reg;
 
 % Unroll gradients
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
-
 
 end
