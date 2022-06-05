@@ -22,12 +22,16 @@ grad = zeros(size(theta));
 h = (X * theta);
 J = (1 / (2 * m)) * sum((h-y).^2) + (lambda / (2 * m)) * (sum(theta(2:end).^2));
 
-grad = (1 / m) *  sum((h-y) .* X);
+for j = 1:length(theta)
+    % Should not regularize when theta = 0
+    if j == 1
+        % Calculate gradient for theta = 0
+        grad(1) = (1 / m) *  sum((h - y) .* X(:,1));
 
-% Had to transpose grad for the submission. Not sure why.
-grad = grad';
-
-grad(2:end) = grad(2:end) + (lambda / m) * theta(2:end);
+    else
+        % Calculate regularized gradient
+        grad(j) = (1 / m) *  sum((h - y) .* X(:,j)) + (lambda / m) * theta(j);
+end
 
 % =========================================================================
 
