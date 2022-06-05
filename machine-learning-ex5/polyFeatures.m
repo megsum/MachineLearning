@@ -15,10 +15,13 @@ X_poly = zeros(numel(X), p);
 %
 % 
 
+% Column 1 should hold the original value of X
+X_poly(:, 1) = X;
 
-
-
-
+% We should multiply each new row by the previous row times X
+for i = 2:p
+    X_poly(:, i) = X_poly(:, i - 1) .* (X);
+end
 
 % =========================================================================
 
