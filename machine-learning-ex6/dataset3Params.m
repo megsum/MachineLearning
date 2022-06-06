@@ -27,12 +27,17 @@ C_vals = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
 sigma_vals = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
 
 prev_error = 1000;
+% Loop through all the potential values of C
 for i = 1: length(C_vals)
+    % Loop through all the potential values of sigma
     for j = 1: length(sigma_vals)
+        % Train the given model with the potential values on a gaussian curve
         model= svmTrain(X, y, C_vals(i), @(x1, x2) gaussianKernel(x1, x2, sigma_vals(j)));
         predictions = svmPredict(model, Xval);
         cur_error = mean(double(predictions ~= yval));
+        % check if the previous error is greater than the current predicted error
         if prev_error > cur_error
+            % If so, our current error is better and we should update the values of sigma and C
             prev_error = cur_error;
             C = C_vals(i);
             sigma = sigma_vals(j);
