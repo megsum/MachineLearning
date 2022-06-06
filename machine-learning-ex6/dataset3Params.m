@@ -23,12 +23,21 @@ sigma = 0.3;
 %        mean(double(predictions ~= yval))
 %
 
+C_vals = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
+sigma_vals = [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30];
 
-
-
-
-
-
+prev_error = 1000;
+for i = 1: length(C_vals)
+    for j = 1: length(sigma_vals)
+        model= svmTrain(X, y, C_vals(i), @(x1, x2) gaussianKernel(x1, x2, sigma_vals(j)));
+        predictions = svmPredict(model, Xval);
+        cur_error = mean(double(predictions ~= yval));
+        if prev_error > cur_error
+            prev_error = cur_error;
+            C = C_vals(i);
+            sigma = sigma_vals(j);
+    end
+end
 % =========================================================================
 
 end
