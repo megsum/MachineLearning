@@ -31,6 +31,7 @@ for i = 1:length(X)
             % If this centroid is the current lowest distance, set that example to that centroid
             prev_val = new_val;
             idx(i) = j;
+        end
     end
 end
 % =============================================================

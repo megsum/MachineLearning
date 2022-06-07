@@ -26,13 +26,19 @@ centroids = zeros(K, n);
 % Note: You can use a for-loop over the centroids to compute this.
 %
 
-
-
-
-
-
-
-
+for i = 1:K
+    avg = 0;
+    num_points = 0;
+    % This is so inefficient and I would like to go back and vectorize this later
+    % I need to find a way to split the sets by value
+    for j = 1:length(X)
+        if idx(j) == i
+            avg = avg + X(j,:);
+            num_points = num_points + 1;
+        end
+    end
+    centroids(i, :) = avg / num_points;
+end
 % =============================================================
 
 
