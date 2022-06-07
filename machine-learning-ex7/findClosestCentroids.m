@@ -21,12 +21,18 @@ idx = zeros(size(X,1), 1);
 % Note: You can use a for-loop over the examples to compute this.
 %
 
-
-
-
-
-
-
+for i = 1:length(X)
+    % Set previous value to a high number
+    prev_val = 100000;
+    for j = 1:K
+        % Norm gets the distance between two points. Find the lowest distance
+        new_val = norm((X(i, :) - centroids(j, :)));
+        if new_val < prev_val
+            % If this centroid is the current lowest distance, set that example to that centroid
+            prev_val = new_val;
+            idx(i) = j;
+    end
+end
 % =============================================================
 
 end
