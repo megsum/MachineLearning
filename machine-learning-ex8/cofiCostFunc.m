@@ -40,21 +40,19 @@ Theta_grad = zeros(size(Theta));
 %                     partial derivatives w.r.t. to each element of Theta
 %
 
+% R .* gets only the users that have reviewed. Can apply that to all our formulas
+J = (1 / 2) * sum(sum(R.*(X * Theta' - Y).^2));
+% Adding regularization to cost
+J = J + lambda/2 * sum(sum((Theta).^2)) + lambda/2 * sum(sum((X).^2));
 
+X_grad = (R.* (X * Theta' - Y)) * Theta;
+% Adding regularization to X_grad
+X_grad = X_grad + lambda * X;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+% Needed to transpose to get the correct orientation
+Theta_grad = (R'.* (X * Theta' - Y)') * X;
+% Adding regularization to Theta_grad
+Theta_grad = Theta_grad + lambda * Theta;
 % =============================================================
 
 grad = [X_grad(:); Theta_grad(:)];
